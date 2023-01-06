@@ -327,11 +327,11 @@ class _RestAuthenticatedEndpoints(_Requests):
         return [ serializers.FundingOffer.parse(*subdata) for subdata in self._POST(endpoint) ]
 
     def submit_funding_offer(self, type: FundingOfferType, symbol: str, amount: Union[Decimal, str],
-                             rate: [Union[Decimal, str]] = None, period: [int] = None,
+                             rate: Union[Decimal, str] = None, period: int = None,
                              flags: Optional[int] = 0) -> Notification:
         data = {
-            "type": type, "symbol": symbol, "amount": amount,
-            "rate": rate, "period": period, "flags": flags
+            "type": type, "symbol": symbol, "amount": str(amount),
+            "rate": str(rate), "period": period, "flags": flags
         }
 
         return serializers._Notification(serializer=serializers.FundingOffer).parse(
