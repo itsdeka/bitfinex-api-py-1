@@ -324,7 +324,7 @@ class _RestAuthenticatedEndpoints(_Requests):
         if symbol:
             endpoint += f"/{symbol}"
 
-        return [ serializers.FundingOffer.parse(*subdata) for subdata in self._POST(endpoint) ]
+        return [ serializers.FundingOffer.parse(*subdata) for subdata in self._POST(endpoint, data={}) ]
 
     def submit_funding_offer(self, type: FundingOfferType, symbol: str, amount: Union[Decimal, str],
                              rate: Union[Decimal, str] = None, period: int = None,
