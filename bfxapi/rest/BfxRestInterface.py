@@ -318,7 +318,7 @@ class _RestAuthenticatedEndpoints(_Requests):
 
         return [ serializers.Ledger.parse(*subdata) for subdata in self._POST(f"auth/r/ledgers/{currency}/hist", data=data) ]
 
-    def get_funding_offers(self, symbol: Union[str, None]) -> List[FundingOffer]:
+    def get_funding_offers(self, symbol: Union[str, None] = None) -> List[FundingOffer]:
         endpoint = f"auth/r/funding/offers"
 
         if symbol:

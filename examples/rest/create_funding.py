@@ -1,24 +1,10 @@
-import os
-import sys
-import asyncio
-sys.path.append('../../../')
+# python -c "from examples.rest.create_funding import *"
 
-from bfxapi.client import Client
+from examples.rest.authentication import *
 from bfxapi.utils.flags_helper import calculate_order_flags
 
-API_KEY = os.getenv("BFX_KEY")
-API_SECRET = os.getenv("BFX_SECRET")
+offer_notification = bfx.rest.auth.submit_funding_offer(type="LIMIT", symbol="fETH", amount=0.5, rate=0.012, period=2, flags=calculate_order_flags(hidden=True))
+print("Offer notification: ", offer_notification)
 
-bfx = Client(
-  API_KEY=API_KEY,
-  API_SECRET=API_SECRET
-)
-
-async def create_funding():
-  response = await bfx.rest.auth.submit_funding_offer(type="LIMIT", symbol="fUSD", amount=1000, rate=0.012, period=7, flags=calculate_order_flags(hidden=True))
-  print ("Offer: ", response.notify_info)
-async def run():
-  await create_funding()
-
-t = asyncio.ensure_future(run())
-asyncio.get_event_loop().run_until_complete(t)
+all_offers = bfx.rest.auth.get_funding_offers()
+print("Offers: ", all_offers)
