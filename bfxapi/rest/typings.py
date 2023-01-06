@@ -169,6 +169,24 @@ class Order(TypedDict):
     ROUTING: str
     META: JSON
 
+class FundingOffer(TypedDict):
+    ID: int
+    SYMBOL: str
+    MTS_CREATE: int
+    MTS_UPDATE: int
+    AMOUNT: float
+    AMOUNT_ORIG: float
+    OFFER_TYPE: str
+    FLAGS: int
+    OFFER_STATUS: str
+    RATE: float
+    PERIOD: int
+    NOTIFY: bool
+    HIDDEN: int
+    RENEW: bool
+    STATUS: str
+    TEXT: str
+
 class Trade(TypedDict):
     ID: int 
     SYMBOL: str 
