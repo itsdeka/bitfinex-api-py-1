@@ -4,15 +4,15 @@ from decimal import Decimal
 from datetime import datetime
 from http import HTTPStatus
 
-from typing import List, Union, Literal, Optional, Any, cast
+from typing import Literal, cast
 
 from . import serializers
 
 from .typings import *
-from .enums import Config, Precision, Sort, OrderType, Error, FundingOfferType
+from .enums import Config, Sort, OrderType, Error, FundingOfferType
 from .exceptions import ResourceNotFound, RequestParametersError, InvalidAuthenticationCredentials, UnknownGenericError
 
-from .. utils.integers import Int16, int32, int45, int64
+from .. utils.cid import generate_unique_cid
 
 from .. utils.encoder import JSONEncoder
 
@@ -248,16 +248,36 @@ class _RestAuthenticatedEndpoints(_Requests):
     def submit_order(self, type: OrderType, symbol: str, amount: Union[Decimal, str], 
                      price: Optional[Union[Decimal, str]] = None, lev: Optional[int] = None, 
                      price_trailing: Optional[Union[Decimal, str]] = None, price_aux_limit: Optional[Union[Decimal, str]] = None, price_oco_stop: Optional[Union[Decimal, str]] = None,
-                     gid: Optional[int] = None, cid: Optional[int] = None,
+                     gid: Optional[int] = None,
                      flags: Optional[int] = 0, tif: Optional[Union[datetime, str]] = None, meta: Optional[JSON] = None) -> Notification:
+        cid = generate_unique_cid()
+
         data = {
-            "type": type, "symbol": symbol, "amount": amount,
-            "price": price, "lev": lev,
-            "price_trailing": price_trailing, "price_aux_limit": price_aux_limit, "price_oco_stop": price_oco_stop,
-            "gid": gid, "cid": cid,
-            "flags": flags, "tif": tif, "meta": meta
+            "type": type, "symbol": symbol, "amount": str(amount), "price": str(price), "meta": meta, "cid": cid
         }
-        
+
+        # add extra parameters
+        if flags:
+            data["flags"] = flags
+
+        if price_trailing:
+            data["price_trailing"] = str(price_trailing)
+
+        if price_aux_limit:
+            data["price_aux_limit"] = str(price_aux_limit)
+
+        if price_oco_stop:
+            data["oco_stop_price"] = str(price_oco_stop)
+
+        if tif:
+            data["tif"] = str(tif)
+
+        if gid:
+            data["gid"] = gid
+
+        if lev:
+            data["lev"] = str(lev)
+
         return serializers._Notification(serializer=serializers.Order).parse(*self._POST("auth/w/order/submit", data=data))
 
     def update_order(self, id: int, amount: Optional[Union[Decimal, str]] = None, price: Optional[Union[Decimal, str]] = None,
@@ -265,11 +285,41 @@ class _RestAuthenticatedEndpoints(_Requests):
                      flags: Optional[int] = 0, lev: Optional[int] = None, delta: Optional[Union[Decimal, str]] = None,
                      price_aux_limit: Optional[Union[Decimal, str]] = None, price_trailing: Optional[Union[Decimal, str]] = None, tif: Optional[Union[datetime, str]] = None) -> Notification:
         data = {
-            "id": id, "amount": amount, "price": price,
-            "cid": cid, "cid_date": cid_date, "gid": gid,
-            "flags": flags, "lev": lev, "delta": delta,
-            "price_aux_limit": price_aux_limit, "price_trailing": price_trailing, "tif": tif
+            "id": id
         }
+
+        if amount:
+            data["amount"] = str(amount)
+
+        if price:
+            data["price"] = str(price)
+
+        if cid:
+            data["cid"] = cid
+
+        if cid_date:
+            data["cid_date"] = str(cid_date)
+
+        if gid:
+            data["gid"] = gid
+
+        if flags:
+            data["flags"] = flags
+
+        if lev:
+            data["lev"] = str(lev)
+
+        if delta:
+            data["deta"] = str(delta)
+
+        if price_aux_limit:
+            data["price_aux_limit"] = str(price_aux_limit)
+
+        if price_trailing:
+            data["price_trailing"] = str(price_trailing)
+
+        if tif:
+            data["tif"] = str(tif)
         
         return serializers._Notification(serializer=serializers.Order).parse(*self._POST("auth/w/order/update", data=data))
 

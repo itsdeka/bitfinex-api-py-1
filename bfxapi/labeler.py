@@ -11,6 +11,10 @@ class _Serializer(Generic[T]):
     def _serialize(self, *args: Any, skip: Optional[List[str]] = None) -> Iterable[Tuple[str, Any]]:
         labels = list(filter(lambda label: label not in (skip or list()), self.__labels))
 
+        # When an order is submitted args is a 1-element list containing a list, in other cases args is a list of values
+        if type(args[0]) == list:
+            args = list(args)[0]
+
         if len(labels) > len(args):
             raise LabelerSerializerException("<labels> and <*args> arguments should contain the same amount of elements.")
 
