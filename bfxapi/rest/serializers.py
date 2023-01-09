@@ -234,6 +234,26 @@ Order = _Serializer[typings.Order]("Order", labels=[
     "META"
 ])
 
+FundingOffer = _Serializer[typings.FundingOffer]("FundingOffer", labels=[
+    "ID",
+    "SYMBOL",
+    "MTS_CREATE",
+    "MTS_UPDATE",
+    "AMOUNT",
+    "AMOUNT_ORIG",
+    "OFFER_TYPE",
+    "FLAGS",
+    "OFFER_STATUS",
+    "RATE",
+    "PERIOD",
+    "NOTIFY",
+    "HIDDEN",
+    "RENEW",
+    "CODE",
+    "STATUS",
+    "TEXT"
+])
+
 Trade = _Serializer[typings.Trade]("Trade", labels=[
     "ID", 
     "PAIR", 
