@@ -1,8 +1,9 @@
-from typing import List, Dict, Union, Optional, Any, TypedDict, cast
+from typing import List, Dict, Union, Optional, Any, cast
+from types import SimpleNamespace
 
 from .labeler import _Serializer
 
-class Notification(TypedDict):
+class Notification():
     MTS: int
     TYPE: str 
     MESSAGE_ID: Optional[int]
@@ -20,11 +21,11 @@ class _Notification(_Serializer):
         self.serializer, self.iterate = serializer, iterate
 
     def parse(self, *values: Any, skip: Optional[List[str]] = None) -> Notification:
-        notification = dict(self._serialize(*values))
+        notification = cast(Notification, SimpleNamespace(**self._serialize(*values)))
 
         if isinstance(self.serializer, _Serializer):
             if self.iterate == False:
-                notification["NOTIFY_INFO"] = self.serializer.parse(*notification["NOTIFY_INFO"], skip=skip)
-            else: notification["NOTIFY_INFO"] = [ self.serializer.parse(*data, skip=skip) for data in notification["NOTIFY_INFO"] ]
+                notification.NOTIFY_INFO = self.serializer.parse(*notification.NOTIFY_INFO, skip=skip)
+            else: notification.NOTIFY_INFO = [ self.serializer.parse(*data, skip=skip) for data in notification.NOTIFY_INFO ]
 
-        return cast(Notification, notification)
+        return notification

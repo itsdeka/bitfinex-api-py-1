@@ -9,13 +9,13 @@ from bfxapi.utils.flags_helper import calculate_order_flags
 from examples.rest.authentication import *
 
 # Create a new order
-new_orders_notification = bfx.rest.auth.submit_order(symbol="tBTCUST", amount=0.015, price=10000, type=OrderType.EXCHANGE_LIMIT,
+new_orders_notification = bfx.rest.auth.submit_order(symbol="tBTCUST", amount=0.005, price=10000, type=OrderType.EXCHANGE_LIMIT,
                                        flags=calculate_order_flags(hidden=False))
 
 # The response is a list containing the orders submitted
 # In this case we have submitted only 1 order, so we can access it as follows
 
-new_order = new_orders_notification['NOTIFY_INFO'][0]
+new_order = new_orders_notification.NOTIFY_INFO[0]
 print(new_order)
 
 # Update it
