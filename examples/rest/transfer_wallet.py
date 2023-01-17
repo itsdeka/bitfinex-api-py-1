@@ -31,11 +31,16 @@ def create_lighting_network_deposit_address():
   invoice = bfx.rest.auth.get_deposit_invoice(wallet="funding", currency="LNX", amount=0.001)
   print ("Invoice: ", invoice)
 
+def get_movements():
+  movements = bfx.rest.auth.get_movements(currency="BTC")
+  print("Movements: ", movements)
+
 def run():
   transfer_wallet()
   get_existing_deposit_address()
   create_new_deposit_address()
   withdraw()
   create_lighting_network_deposit_address()
+  get_movements()
 
 run()

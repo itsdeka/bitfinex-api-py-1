@@ -198,6 +198,20 @@ class Invoice(_Type):
     AMOUNT: str
 
 @dataclass
+class Movement(_Type):
+    ID: str
+    CURRENCY: str
+    CURRENCY_NAME: str
+    MTS_STARTED: int
+    MTS_UPDATED: int
+    STATUS: str
+    AMOUNT: int
+    FEES: int
+    DESTINATION_ADDRESS: str
+    TRANSACTION_ID: str
+    WITHDRAW_TRANSACTION_NOTE: str
+
+@dataclass
 class Order(_Type):
     ID: int
     GID: int

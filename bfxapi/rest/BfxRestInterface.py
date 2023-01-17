@@ -438,3 +438,13 @@ class _RestAuthenticatedEndpoints(_Requests):
         }
 
         return serializers.Invoice.parse(*self._POST("auth/w/deposit/invoice", data=data))
+
+    def get_movements(self, currency: Optional[str] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[Movement]:
+        data = {
+            "start": start, "end": end,
+            "limit": limit
+        }
+
+        print(self._POST(f"auth/r/movements/{currency}/hist", data=data))
+
+        return [ serializers.Movement.parse(*subdata) for subdata in self._POST(f"auth/r/movements/{currency}/hist", data=data) ]

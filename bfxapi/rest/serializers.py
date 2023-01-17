@@ -230,6 +230,31 @@ Invoice = generate_labeler_serializer("Invoice", klass=types.Invoice, labels=[
     "AMOUNT"
 ])
 
+Movement = generate_labeler_serializer("Movement", klass=types.Movement, labels=[
+    "ID",
+    "CURRENCY",
+    "CURRENCY_NAME",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "MTS_STARTED",
+    "MTS_UPDATED",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "STATUS",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "AMOUNT",
+    "FEES",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "DESTINATION_ADDRESS",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "TRANSACTION_ID",
+    "WITHDRAW_TRANSACTION_NOTE"
+])
+
 DepositAddress = generate_labeler_serializer("DepositAddress", klass=types.DepositAddress, labels=[
     "_PLACEHOLDER",
     "METHOD",
