@@ -46,8 +46,6 @@ class _Requests(object):
     def _GET(self, endpoint, params = None):
         response = requests.get(f"{self.host}/{endpoint}", params=params)
 
-        print(f"{self.host}/{endpoint}")
-        
         if response.status_code == HTTPStatus.NOT_FOUND:
             raise ResourceNotFound(f"No resources found at endpoint <{endpoint}>.")
 
