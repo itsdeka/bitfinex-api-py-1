@@ -199,17 +199,34 @@ Wallet = generate_labeler_serializer("Wallet", klass=types.Wallet, labels=[
     "TRADE_DETAILS"
 ])
 
-WalletTransfer = generate_labeler_serializer("WalletTransfer", klass=types.WalletTransfer, labels=[
+Transfer = generate_labeler_serializer("Transfer", klass=types.Transfer, labels=[
+    "MTS",
     "WALLET_FROM",
     "WALLET_TO",
-    "CURRENCY",
+    "_PLACEHOLDER",
+    "CURRENCY_FROM",
     "CURRENCY_TO",
+    "_PLACEHOLDER",
     "AMOUNT"
 ])
 
+Withdrawal = generate_labeler_serializer("Withdrawal", klass=types.Withdrawal, labels=[
+    "WITHDRAWAL_ID",
+    "_PLACEHOLDER",
+    "METHOD",
+    "PAYMENT_ID",
+    "WALLET",
+    "AMOUNT",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "WITHDRAWAL_FEE"
+])
+
 DepositAddress = generate_labeler_serializer("DepositAddress", klass=types.DepositAddress, labels=[
+    "_PLACEHOLDER",
     "METHOD",
     "CURRENCY_CODE",
+    "_PLACEHOLDER",
     "ADDRESS",
     "POOL_ADDRESS"
 ])

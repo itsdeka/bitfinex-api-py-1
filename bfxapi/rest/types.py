@@ -167,12 +167,22 @@ class Wallet(_Type):
     TRADE_DETAILS: JSON
 
 @dataclass
-class WalletTransfer(_Type):
+class Transfer(_Type):
+    MTS: str
     WALLET_FROM: str
     WALLET_TO: str
-    CURRENCY: str
+    CURRENCY_FROM: str
     CURRENCY_TO: str
     AMOUNT: float
+
+@dataclass
+class Withdrawal(_Type):
+    WITHDRAWAL_ID: str
+    METHOD: str
+    PAYMENT_ID: str
+    WALLET: str
+    AMOUNT: float
+    WITHDRAWAL_FEE: float
 
 @dataclass
 class DepositAddress(_Type):
