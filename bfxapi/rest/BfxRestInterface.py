@@ -430,3 +430,11 @@ class _RestAuthenticatedEndpoints(_Requests):
         }
 
         return serializers._Notification[DepositAddress](serializer=serializers.DepositAddress).parse(*self._POST("auth/w/deposit/address", data=data))
+
+    def get_deposit_invoice(self, wallet: str, currency: str, amount: Union[Decimal, str]) -> Invoice:
+        data = {
+            "wallet": wallet, "currency": currency,
+            "amount": str(amount)
+        }
+
+        return serializers.Invoice.parse(*self._POST("auth/w/deposit/invoice", data=data))

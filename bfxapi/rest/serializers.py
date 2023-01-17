@@ -222,6 +222,14 @@ Withdrawal = generate_labeler_serializer("Withdrawal", klass=types.Withdrawal, l
     "WITHDRAWAL_FEE"
 ])
 
+Invoice = generate_labeler_serializer("Invoice", klass=types.Invoice, labels=[
+    "INVOICE_HASH",
+    "INVOICE",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "AMOUNT"
+])
+
 DepositAddress = generate_labeler_serializer("DepositAddress", klass=types.DepositAddress, labels=[
     "_PLACEHOLDER",
     "METHOD",

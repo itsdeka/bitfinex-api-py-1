@@ -192,6 +192,12 @@ class DepositAddress(_Type):
     POOL_ADDRESS: str
 
 @dataclass
+class Invoice(_Type):
+    INVOICE_HASH: str
+    INVOICE: str
+    AMOUNT: str
+
+@dataclass
 class Order(_Type):
     ID: int
     GID: int
