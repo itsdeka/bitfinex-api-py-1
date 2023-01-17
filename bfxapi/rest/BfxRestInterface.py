@@ -406,3 +406,21 @@ class _RestAuthenticatedEndpoints(_Requests):
         }
 
         return [ serializers.FundingCredit.parse(*subdata) for subdata in self._POST(endpoint, data=data) ]
+
+    def submit_wallet_transfer(self, from_wallet: str, to_wallet: str, from_currency: str, to_currency: str, amount: Union[Decimal, str]) -> Notification[WalletTransfer]:
+        data = {
+            "from": from_wallet, "to": to_wallet,
+            "from_currency": from_currency, "to_currency": to_currency,
+            "amount": amount
+        }
+
+        return serializers._Notification[WalletTransfer](serializer=serializers.WalletTransfer).parse(*self._POST("auth/w/transfer", data=data))
+
+    def get_wallet_deposit_address(self, wallet: str, method: str, renew: Optional[bool] = True) -> Notification[DepositAddress]:
+        data = {
+            "wallet": wallet,
+            "method": method,
+            "renew": 1 if renew else 0
+        }
+
+        return serializers._Notification[DepositAddress](serializer=serializers.DepositAddress).parse(*self._POST("auth/w/deposit/address", data=data))

@@ -167,6 +167,21 @@ class Wallet(_Type):
     TRADE_DETAILS: JSON
 
 @dataclass
+class WalletTransfer(_Type):
+    WALLET_FROM: str
+    WALLET_TO: str
+    CURRENCY: str
+    CURRENCY_TO: str
+    AMOUNT: float
+
+@dataclass
+class DepositAddress(_Type):
+    METHOD: str
+    CURRENCY_CODE: str
+    ADDRESS: str
+    POOL_ADDRESS: str
+
+@dataclass
 class Order(_Type):
     ID: int
     GID: int
