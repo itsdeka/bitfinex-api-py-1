@@ -475,4 +475,24 @@ FxRate = generate_labeler_serializer("FxRate", klass=types.FxRate, labels=[
     "CURRENT_RATE"
 ])
 
+SymbolMarginInfo = generate_labeler_serializer("SymbolMarginInfo", klass=types.SymbolMarginInfo, labels=[
+    "SYMBOL",
+    "TRADABLE_BALANCE",
+    "GROSS_BALANCE",
+    "BUY",
+    "SELL",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER"
+])
+
+BaseMarginInfo = generate_labeler_serializer("BaseMarginInfo", klass=types.BaseMarginInfo, labels=[
+    "USER_PL",
+    "USER_SWAPS",
+    "MARGIN_BALANCE",
+    "MARGIN_NET",
+    "MARGIN_MIN"
+])
+
 #endregion
