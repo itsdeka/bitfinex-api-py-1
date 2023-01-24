@@ -260,18 +260,10 @@ class _RestPublicEndpoints(_Requests):
             "end": end, "limit": limit
         }
 
-        messages = []
+        messages = self._GET("pulse/hist", params=params)
 
-        response = self._GET("pulse/hist", params=params)
-
-        for raw_message in response:
-            message = []
-            for i in range(0, len(raw_message)):
-                if i == 18:
-                    message.append(serializers.PulseProfile.parse(*raw_message[i][0]))
-                else:
-                    message.append(raw_message[i])
-            messages.append(message)
+        for message in messages:
+            message[18] = serializers.PulseProfile.parse(*message[18][0])
 
         return [serializers.PulseMessage.parse(*message) for message in messages]
 
