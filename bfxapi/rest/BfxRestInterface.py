@@ -287,7 +287,7 @@ class _RestPublicEndpoints(_Requests):
 
         return serializers.TradingMarketAveragePrice.parse(*self._POST("calc/trade/avg", data=data, _append_authentication_headers=False))
 
-    def get_funding_market_average_price(self, symbol: str, amount: Union[Decimal, str], period: Optional[int] = None, rate_limit: Union[Decimal, str] = None) -> FundingMarketAveragePrice:
+    def get_funding_market_average_price(self, symbol: str, amount: Union[Decimal, str], period: int, rate_limit: Union[Decimal, str] = None) -> FundingMarketAveragePrice:
         data = {
             "symbol": symbol,
             "amount": str(amount),
