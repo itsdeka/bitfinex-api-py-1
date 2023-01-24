@@ -370,4 +370,8 @@ class FundingMarketAveragePrice(_Type):
     RATE_AVG: float
     AMOUNT: float
 
+@dataclass
+class FxRate(_Type):
+    CURRENT_RATE: float
+
 #endregion

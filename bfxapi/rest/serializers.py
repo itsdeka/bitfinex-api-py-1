@@ -466,10 +466,13 @@ TradingMarketAveragePrice = generate_labeler_serializer("TradingMarketAveragePri
     "AMOUNT"
 ])
 
-
 FundingMarketAveragePrice = generate_labeler_serializer("FundingMarketAveragePrice", klass=types.FundingMarketAveragePrice, labels=[
     "RATE_AVG",
     "AMOUNT"
+])
+
+FxRate = generate_labeler_serializer("FxRate", klass=types.FxRate, labels=[
+    "CURRENT_RATE"
 ])
 
 #endregion
