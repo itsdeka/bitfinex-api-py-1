@@ -413,4 +413,86 @@ Movement = generate_labeler_serializer("Movement", klass=types.Movement, labels=
     "WITHDRAW_TRANSACTION_NOTE"
 ])
 
+PulseProfile = generate_labeler_serializer("PulseProfile", klass=types.PulseProfile, labels=[
+    "PUID",
+    "MTS",
+    "_PLACEHOLDER",
+    "NICKNAME",
+    "NAME",
+    "PICTURE",
+    "TEXT",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "FOLLOWERS",
+    "FOLLOWING",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "TIPPING_STATUS"
+])
+
+PulseMessage = generate_labeler_serializer("PulseMessage", klass=types.PulseMessage, labels=[
+    "PID",
+    "MTS",
+    "_PLACEHOLDER",
+    "PUID",
+    "_PLACEHOLDER",
+    "TITLE",
+    "CONTENT",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "IS_PIN",
+    "IS_PUBLIC",
+    "COMMENTS_DISABLED",
+    "TAGS",
+    "ATTACHMENTS",
+    "META",
+    "LIKES",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "PROFILE",
+    "COMMENTS",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+])
+
+TradingMarketAveragePrice = generate_labeler_serializer("TradingMarketAveragePrice", klass=types.TradingMarketAveragePrice, labels=[
+    "PRICE_AVG",
+    "AMOUNT"
+])
+
+FundingMarketAveragePrice = generate_labeler_serializer("FundingMarketAveragePrice", klass=types.FundingMarketAveragePrice, labels=[
+    "RATE_AVG",
+    "AMOUNT"
+])
+
+FxRate = generate_labeler_serializer("FxRate", klass=types.FxRate, labels=[
+    "CURRENT_RATE"
+])
+
+SymbolMarginInfo = generate_labeler_serializer("SymbolMarginInfo", klass=types.SymbolMarginInfo, labels=[
+    "SYMBOL",
+    "TRADABLE_BALANCE",
+    "GROSS_BALANCE",
+    "BUY",
+    "SELL",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER"
+])
+
+BaseMarginInfo = generate_labeler_serializer("BaseMarginInfo", klass=types.BaseMarginInfo, labels=[
+    "USER_PL",
+    "USER_SWAPS",
+    "MARGIN_BALANCE",
+    "MARGIN_NET",
+    "MARGIN_MIN"
+])
+
 #endregion

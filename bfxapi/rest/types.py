@@ -331,4 +331,63 @@ class Movement(_Type):
     TRANSACTION_ID: str
     WITHDRAW_TRANSACTION_NOTE: str
 
+@dataclass
+class PulseProfile(_Type):
+    PUID: str
+    MTS: int
+    NICKNAME: str
+    NAME: str
+    PICTURE: str
+    TEXT: str
+    FOLLOWERS: int
+    FOLLOWING: int
+    TIPPING_STATUS: int
+
+@dataclass
+class PulseMessage(_Type):
+    PID: str
+    MTS: int
+    PUID: str
+    TITLE: str
+    CONTENT: str
+    IS_PIN: int
+    IS_PUBLIC: int
+    COMMENTS_DISABLED: int
+    TAGS: List[str]
+    ATTACHMENTS: List[str]
+    META: List[JSON]
+    LIKES: int
+    PROFILE: PulseProfile
+    COMMENTS: int
+
+@dataclass
+class TradingMarketAveragePrice(_Type):
+    PRICE_AVG: float
+    AMOUNT: float
+
+@dataclass
+class FundingMarketAveragePrice(_Type):
+    RATE_AVG: float
+    AMOUNT: float
+
+@dataclass
+class FxRate(_Type):
+    CURRENT_RATE: float
+
+@dataclass
+class SymbolMarginInfo(_Type):
+    SYMBOL: str
+    TRADABLE_BALANCE: float
+    GROSS_BALANCE: float
+    BUY: float
+    SELL: float
+
+@dataclass
+class BaseMarginInfo(_Type):
+    USER_PL: float
+    USER_SWAPS: float
+    MARGIN_BALANCE: float
+    MARGIN_NET: float
+    MARGIN_MIN: float
+
 #endregion

@@ -58,7 +58,7 @@ class _Requests(object):
                 raise RequestParametersError(f"The request was rejected with the following parameter error: <{data[2]}>")
 
             if data[1] == None or data[1] == Error.ERR_UNK or data[1] == Error.ERR_GENERIC:
-                raise UnknownGenericError("The server replied to the request with a generic error with message: <{data[2]}>.")
+                raise UnknownGenericError(f"The server replied to the request with a generic error with message: <{data[2]}>.")
 
         return data
 
@@ -99,11 +99,11 @@ class _RestPublicEndpoints(_Requests):
         
         parsers = { "t": serializers.TradingPairTicker.parse, "f": serializers.FundingCurrencyTicker.parse }
         
-        return [ cast(Union[TradingPairTicker, FundingCurrencyTicker], parsers[subdata[0][0]](*subdata)) for subdata in data ]
+        return [ cast(Union[TradingPairTicker, FundingCurrencyTicker], parsers[sub_data[0][0]](*sub_data)) for sub_data in data ]
 
     def get_t_tickers(self, pairs: Union[List[str], Literal["ALL"]]) -> List[TradingPairTicker]:
         if isinstance(pairs, str) and pairs == "ALL":
-            return [ cast(TradingPairTicker, subdata) for subdata in self.get_tickers([ "ALL" ]) if cast(str, subdata.SYMBOL).startswith("t") ]
+            return [ cast(TradingPairTicker, sub_data) for sub_data in self.get_tickers([ "ALL" ]) if cast(str, sub_data.SYMBOL).startswith("t") ]
 
         data = self.get_tickers([ "t" + pair for pair in pairs ])
 
@@ -111,7 +111,7 @@ class _RestPublicEndpoints(_Requests):
 
     def get_f_tickers(self, currencies: Union[List[str], Literal["ALL"]]) -> List[FundingCurrencyTicker]:
         if isinstance(currencies, str) and currencies == "ALL":
-            return [ cast(FundingCurrencyTicker, subdata) for subdata in self.get_tickers([ "ALL" ]) if cast(str, subdata.SYMBOL).startswith("f") ]
+            return [ cast(FundingCurrencyTicker, sub_data) for sub_data in self.get_tickers([ "ALL" ]) if cast(str, sub_data.SYMBOL).startswith("f") ]
 
         data = self.get_tickers([ "f" + currency for currency in currencies ])
 
@@ -132,29 +132,29 @@ class _RestPublicEndpoints(_Requests):
 
         data = self._GET("tickers/hist", params=params)
         
-        return [ serializers.TickersHistory.parse(*subdata) for subdata in data ]
+        return [ serializers.TickersHistory.parse(*sub_data) for sub_data in data ]
 
     def get_t_trades(self, pair: str, limit: Optional[int] = None, start: Optional[str] = None, end: Optional[str] = None, sort: Optional[Sort] = None) -> List[TradingPairTrade]:
         params = { "limit": limit, "start": start, "end": end, "sort": sort }
         data = self._GET(f"trades/{'t' + pair}/hist", params=params)
-        return [ serializers.TradingPairTrade.parse(*subdata) for subdata in data ]
+        return [ serializers.TradingPairTrade.parse(*sub_data) for sub_data in data ]
 
     def get_f_trades(self, currency: str, limit: Optional[int] = None, start: Optional[str] = None, end: Optional[str] = None, sort: Optional[Sort] = None) -> List[FundingCurrencyTrade]:
         params = { "limit": limit, "start": start, "end": end, "sort": sort }
         data = self._GET(f"trades/{'f' + currency}/hist", params=params)
-        return [ serializers.FundingCurrencyTrade.parse(*subdata) for subdata in data ]
+        return [ serializers.FundingCurrencyTrade.parse(*sub_data) for sub_data in data ]
 
     def get_t_book(self, pair: str, precision: Literal["P0", "P1", "P2", "P3", "P4"], len: Optional[Literal[1, 25, 100]] = None) -> List[TradingPairBook]:
-        return [ serializers.TradingPairBook.parse(*subdata) for subdata in self._GET(f"book/{'t' + pair}/{precision}", params={ "len": len }) ]
+        return [ serializers.TradingPairBook.parse(*sub_data) for sub_data in self._GET(f"book/{'t' + pair}/{precision}", params={ "len": len }) ]
 
     def get_f_book(self, currency: str, precision: Literal["P0", "P1", "P2", "P3", "P4"], len: Optional[Literal[1, 25, 100]] = None) -> List[FundingCurrencyBook]:
-        return [ serializers.FundingCurrencyBook.parse(*subdata) for subdata in self._GET(f"book/{'f' + currency}/{precision}", params={ "len": len }) ]
+        return [ serializers.FundingCurrencyBook.parse(*sub_data) for sub_data in self._GET(f"book/{'f' + currency}/{precision}", params={ "len": len }) ]
 
     def get_t_raw_book(self, pair: str, len: Optional[Literal[1, 25, 100]] = None) -> List[TradingPairRawBook]:
-        return [ serializers.TradingPairRawBook.parse(*subdata) for subdata in self._GET(f"book/{'t' + pair}/R0", params={ "len": len }) ]
+        return [ serializers.TradingPairRawBook.parse(*sub_data) for sub_data in self._GET(f"book/{'t' + pair}/R0", params={ "len": len }) ]
 
     def get_f_raw_book(self, currency: str, len: Optional[Literal[1, 25, 100]] = None) -> List[FundingCurrencyRawBook]:
-        return [ serializers.FundingCurrencyRawBook.parse(*subdata) for subdata in self._GET(f"book/{'f' + currency}/R0", params={ "len": len }) ]
+        return [ serializers.FundingCurrencyRawBook.parse(*sub_data) for sub_data in self._GET(f"book/{'f' + currency}/R0", params={ "len": len }) ]
 
     def get_stats_hist(
         self, 
@@ -163,7 +163,7 @@ class _RestPublicEndpoints(_Requests):
     ) -> List[Statistic]:
         params = { "sort": sort, "start": start, "end": end, "limit": limit }
         data = self._GET(f"stats1/{resource}/hist", params=params)
-        return [ serializers.Statistic.parse(*subdata) for subdata in data ]
+        return [ serializers.Statistic.parse(*sub_data) for sub_data in data ]
 
     def get_stats_last(
         self, 
@@ -181,7 +181,7 @@ class _RestPublicEndpoints(_Requests):
     ) -> List[Candle]:
         params = { "sort": sort, "start": start, "end": end, "limit": limit }
         data = self._GET(f"candles/trade:{tf}:{symbol}/hist", params=params)
-        return [ serializers.Candle.parse(*subdata) for subdata in data ]
+        return [ serializers.Candle.parse(*sub_data) for sub_data in data ]
 
     def get_candles_last(
         self,
@@ -199,7 +199,7 @@ class _RestPublicEndpoints(_Requests):
 
         data = self._GET(f"status/deriv", params=params)
 
-        return [ serializers.DerivativesStatus.parse(*subdata) for subdata in data ]
+        return [ serializers.DerivativesStatus.parse(*sub_data) for sub_data in data ]
 
     def get_derivatives_status_history(
         self, 
@@ -210,14 +210,14 @@ class _RestPublicEndpoints(_Requests):
 
         data = self._GET(f"status/{type}/{symbol}/hist", params=params)
 
-        return [ serializers.DerivativesStatus.parse(*subdata, skip=[ "KEY" ]) for subdata in data ]
+        return [ serializers.DerivativesStatus.parse(*sub_data, skip=[ "KEY" ]) for sub_data in data ]
 
     def get_liquidations(self, sort: Optional[Sort] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[Liquidation]:
         params = { "sort": sort, "start": start, "end": end, "limit": limit }
 
         data = self._GET("liquidations/hist", params=params)
 
-        return [ serializers.Liquidation.parse(*subdata[0]) for subdata in data ]
+        return [ serializers.Liquidation.parse(*sub_data[0]) for sub_data in data ]
 
     def get_seed_candles(self, symbol: str, tf: str = '1m', sort: Optional[Sort] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[Candle]:
 
@@ -225,7 +225,7 @@ class _RestPublicEndpoints(_Requests):
 
         data = self._GET(f"candles/trade:{tf}:{symbol}/hist?limit={limit}&start={start}&end={end}&sort={sort}", params=params)
 
-        return [ serializers.Candle.parse(*subdata) for subdata in data ]
+        return [ serializers.Candle.parse(*sub_data) for sub_data in data ]
 
     def get_leaderboards_hist(
         self,
@@ -234,7 +234,7 @@ class _RestPublicEndpoints(_Requests):
     ) -> List[Leaderboard]:
         params = { "sort": sort, "start": start, "end": end, "limit": limit }
         data = self._GET(f"rankings/{resource}/hist", params=params)
-        return [ serializers.Leaderboard.parse(*subdata) for subdata in data ]
+        return [ serializers.Leaderboard.parse(*sub_data) for sub_data in data ]
 
     def get_leaderboards_last(
         self,
@@ -250,14 +250,56 @@ class _RestPublicEndpoints(_Requests):
 
         data = self._GET(f"funding/stats/{symbol}/hist", params=params)
 
-        return [ serializers.FundingStatistic.parse(*subdata) for subdata in data ]
+        return [ serializers.FundingStatistic.parse(*sub_data) for sub_data in data ]
 
     def conf(self, config: Config) -> Any:
         return self._GET(f"conf/{config}")[0]
 
+    def get_pulse_history(self, end: Optional[str] = None, limit: Optional[int] = None) -> List[PulseMessage]:
+        params = {
+            "end": end, "limit": limit
+        }
+
+        messages = self._GET("pulse/hist", params=params)
+
+        for message in messages:
+            message[18] = serializers.PulseProfile.parse(*message[18][0])
+
+        return [serializers.PulseMessage.parse(*message) for message in messages]
+
+    def get_pulse_profile(self, nickname: str) -> PulseProfile:
+        return serializers.PulseProfile.parse(*self._GET(f"pulse/profile/{nickname}"))
+
+    def get_trading_market_average_price(self, symbol: str, amount: Union[Decimal, str], price_limit: Union[Decimal, str] = None) -> TradingMarketAveragePrice:
+        data = {
+            "symbol": symbol,
+            "amount": str(amount),
+            "price_limit": str(price_limit)
+        }
+
+        return serializers.TradingMarketAveragePrice.parse(*self._POST("calc/trade/avg", data=data, _append_authentication_headers=False))
+
+    def get_funding_market_average_price(self, symbol: str, amount: Union[Decimal, str], period: int, rate_limit: Union[Decimal, str] = None) -> FundingMarketAveragePrice:
+        data = {
+            "symbol": symbol,
+            "amount": str(amount),
+            "period": period,
+            "rate_limit": str(rate_limit)
+        }
+
+        return serializers.FundingMarketAveragePrice.parse(*self._POST("calc/trade/avg", data=data, _append_authentication_headers=False))
+
+    def get_fx_rate(self, ccy1: str, ccy2: str) -> FxRate:
+        data = {
+            "ccy1": ccy1,
+            "ccy2": ccy2
+        }
+
+        return serializers.FxRate.parse(*self._POST("calc/fx", data=data, _append_authentication_headers=False))
+
 class _RestAuthenticatedEndpoints(_Requests):
     def get_wallets(self) -> List[Wallet]:
-        return [ serializers.Wallet.parse(*subdata) for subdata in self._POST("auth/r/wallets") ]
+        return [ serializers.Wallet.parse(*sub_data) for sub_data in self._POST("auth/r/wallets") ]
 
     def get_orders(self, symbol: Optional[str] = None, ids: Optional[List[str]] = None) -> List[Order]:
         endpoint = "auth/r/orders"
@@ -265,10 +307,10 @@ class _RestAuthenticatedEndpoints(_Requests):
         if symbol != None:
             endpoint += f"/{symbol}"
 
-        return [ serializers.Order.parse(*subdata) for subdata in self._POST(endpoint, data={ "id": ids }) ]
+        return [ serializers.Order.parse(*sub_data) for sub_data in self._POST(endpoint, data={ "id": ids }) ]
 
     def get_positions(self) -> List[Position]:
-        return [ serializers.Position.parse(*subdata) for subdata in self._POST("auth/r/positions") ]
+        return [ serializers.Position.parse(*sub_data) for sub_data in self._POST("auth/r/positions") ]
 
     def submit_order(self, type: OrderType, symbol: str, amount: Union[Decimal, str], 
                      price: Optional[Union[Decimal, str]] = None, lev: Optional[int] = None, 
@@ -329,7 +371,7 @@ class _RestAuthenticatedEndpoints(_Requests):
             "limit": limit
         }
 
-        return [ serializers.Order.parse(*subdata) for subdata in self._POST(endpoint, data=data) ]
+        return [ serializers.Order.parse(*sub_data) for sub_data in self._POST(endpoint, data=data) ]
 
     def get_trades_history(self, symbol: Optional[str] = None, sort: Optional[Sort] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[Trade]:
         if symbol == None:
@@ -342,10 +384,10 @@ class _RestAuthenticatedEndpoints(_Requests):
             "limit": limit
         }
 
-        return [ serializers.Trade.parse(*subdata) for subdata in self._POST(endpoint, data=data) ]
+        return [ serializers.Trade.parse(*sub_data) for sub_data in self._POST(endpoint, data=data) ]
 
     def get_order_trades(self, symbol: str, id: int) -> List[OrderTrade]:
-        return [ serializers.OrderTrade.parse(*subdata) for subdata in self._POST(f"auth/r/order/{symbol}:{id}/trades") ]
+        return [ serializers.OrderTrade.parse(*sub_data) for sub_data in self._POST(f"auth/r/order/{symbol}:{id}/trades") ]
 
     def get_ledgers(self, currency: str, category: Optional[int] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[Ledger]:
         data = {
@@ -354,7 +396,7 @@ class _RestAuthenticatedEndpoints(_Requests):
             "limit": limit
         }
 
-        return [ serializers.Ledger.parse(*subdata) for subdata in self._POST(f"auth/r/ledgers/{currency}/hist", data=data) ]
+        return [ serializers.Ledger.parse(*sub_data) for sub_data in self._POST(f"auth/r/ledgers/{currency}/hist", data=data) ]
 
     def get_funding_offers(self, symbol: Optional[str] = None) -> List[FundingOffer]:
         endpoint = "auth/r/funding/offers"
@@ -362,7 +404,7 @@ class _RestAuthenticatedEndpoints(_Requests):
         if symbol != None:
             endpoint += f"/{symbol}"
 
-        return [ serializers.FundingOffer.parse(*subdata) for subdata in self._POST(endpoint) ]
+        return [ serializers.FundingOffer.parse(*sub_data) for sub_data in self._POST(endpoint) ]
 
     def submit_funding_offer(self, type: FundingOfferType, symbol: str, amount: Union[Decimal, str],
                              rate: Union[Decimal, str], period: int,
@@ -388,14 +430,14 @@ class _RestAuthenticatedEndpoints(_Requests):
             "limit": limit
         }
 
-        return [ serializers.FundingOffer.parse(*subdata) for subdata in self._POST(endpoint, data=data) ]
+        return [ serializers.FundingOffer.parse(*sub_data) for sub_data in self._POST(endpoint, data=data) ]
 
     def get_funding_credits(self, symbol: Optional[str] = None) -> List[FundingCredit]:
         if symbol == None:
             endpoint = "auth/r/funding/credits"
         else: endpoint = f"auth/r/funding/credits/{symbol}"
 
-        return [ serializers.FundingCredit.parse(*subdata) for subdata in self._POST(endpoint) ]
+        return [ serializers.FundingCredit.parse(*sub_data) for sub_data in self._POST(endpoint) ]
 
     def get_funding_credits_history(self, symbol: Optional[str] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[FundingCredit]:
         if symbol == None:
@@ -407,7 +449,7 @@ class _RestAuthenticatedEndpoints(_Requests):
             "limit": limit
         }
 
-        return [ serializers.FundingCredit.parse(*subdata) for subdata in self._POST(endpoint, data=data) ]
+        return [ serializers.FundingCredit.parse(*sub_data) for sub_data in self._POST(endpoint, data=data) ]
 
     def submit_wallet_transfer(self, from_wallet: str, to_wallet: str, currency: str, currency_to: str, amount: Union[Decimal, str]) -> Notification[Transfer]:
         data = {
@@ -453,4 +495,14 @@ class _RestAuthenticatedEndpoints(_Requests):
             "limit": limit
         }
 
-        return [ serializers.Movement.parse(*subdata) for subdata in self._POST(endpoint, data=data) ]
+        return [ serializers.Movement.parse(*sub_data) for sub_data in self._POST(endpoint, data=data) ]
+
+    def get_symbol_margin_info(self, key: str) -> SymbolMarginInfo:
+        data = self._POST(f"auth/r/info/margin/{key}")
+        return serializers.SymbolMarginInfo.parse(*[data[1]] + data[2])
+    
+    def get_all_symbols_margin_info(self) -> List[SymbolMarginInfo]:
+        return [ serializers.SymbolMarginInfo.parse(*([sub_data[1]] + sub_data[2])) for sub_data in self._POST(f"auth/r/info/margin/sym_all") ]
+
+    def get_base_margin_info(self) -> BaseMarginInfo:
+        return serializers.BaseMarginInfo.parse(*(self._POST(f"auth/r/info/margin/base")[1]))
