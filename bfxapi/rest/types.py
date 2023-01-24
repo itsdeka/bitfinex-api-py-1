@@ -331,4 +331,33 @@ class Movement(_Type):
     TRANSACTION_ID: str
     WITHDRAW_TRANSACTION_NOTE: str
 
+@dataclass
+class PulseProfile(_Type):
+    PUID: str
+    MTS: int
+    NICKNAME: str
+    NAME: str
+    PICTURE: str
+    TEXT: str
+    FOLLOWERS: int
+    FOLLOWING: int
+    TIPPING_STATUS: int
+
+@dataclass
+class PulseMessage(_Type):
+    PID: str
+    MTS: int
+    PUID: str
+    TITLE: str
+    CONTENT: str
+    IS_PIN: int
+    IS_PUBLIC: int
+    COMMENTS_DISABLED: int
+    TAGS: List[str]
+    ATTACHMENTS: List[str]
+    META: List[JSON]
+    LIKES: int
+    PROFILE: PulseProfile
+    COMMENTS: int
+
 #endregion

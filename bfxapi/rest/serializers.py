@@ -413,4 +413,52 @@ Movement = generate_labeler_serializer("Movement", klass=types.Movement, labels=
     "WITHDRAW_TRANSACTION_NOTE"
 ])
 
+PulseProfile = generate_labeler_serializer("PulseProfile", klass=types.PulseProfile, labels=[
+    "PUID",
+    "MTS",
+    "_PLACEHOLDER",
+    "NICKNAME",
+    "NAME",
+    "PICTURE",
+    "TEXT",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "FOLLOWERS",
+    "FOLLOWING",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "TIPPING_STATUS"
+])
+
+PulseMessage = generate_labeler_serializer("PulseMessage", klass=types.PulseMessage, labels=[
+    "PID",
+    "MTS",
+    "_PLACEHOLDER",
+    "PUID",
+    "_PLACEHOLDER",
+    "TITLE",
+    "CONTENT",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "IS_PIN",
+    "IS_PUBLIC",
+    "COMMENTS_DISABLED",
+    "TAGS",
+    "ATTACHMENTS",
+    "META",
+    "LIKES",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "PROFILE",
+    "COMMENTS",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+])
+
 #endregion
