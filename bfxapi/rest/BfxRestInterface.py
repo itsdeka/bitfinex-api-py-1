@@ -273,8 +273,8 @@ class _RestPublicEndpoints(_Requests):
     def get_trading_market_average_price(self, symbol: str, amount: Union[Decimal, str], price_limit: Union[Decimal, str] = None) -> TradingMarketAveragePrice:
         data = {
             "symbol": symbol,
-            "amount": str(amount),
-            "price_limit": str(price_limit)
+            "amount": format(amount, '.10f'),
+            "price_limit": format(price_limit, '.10f')
         }
 
         return serializers.TradingMarketAveragePrice.parse(*self._POST("calc/trade/avg", data=data, _append_authentication_headers=False))
@@ -282,9 +282,9 @@ class _RestPublicEndpoints(_Requests):
     def get_funding_market_average_price(self, symbol: str, amount: Union[Decimal, str], period: int, rate_limit: Union[Decimal, str] = None) -> FundingMarketAveragePrice:
         data = {
             "symbol": symbol,
-            "amount": str(amount),
+            "amount": format(amount, '.10f'),
             "period": period,
-            "rate_limit": str(rate_limit)
+            "rate_limit": format(rate_limit, '.10f')
         }
 
         return serializers.FundingMarketAveragePrice.parse(*self._POST("calc/trade/avg", data=data, _append_authentication_headers=False))
@@ -506,3 +506,11 @@ class _RestAuthenticatedEndpoints(_Requests):
 
     def get_base_margin_info(self) -> BaseMarginInfo:
         return serializers.BaseMarginInfo.parse(*(self._POST(f"auth/r/info/margin/base")[1]))
+
+    def claim_position(self, id: int, amount: Optional[Union[Decimal, str]] = None) -> Notification[Claim]:
+        data = {
+            "id": id,
+            "amount": format(amount, '.10f') if amount else None
+        }
+
+        return serializers._Notification[Claim](serializer=serializers.Claim).parse(*self._POST("auth/w/position/claim", data=data))
