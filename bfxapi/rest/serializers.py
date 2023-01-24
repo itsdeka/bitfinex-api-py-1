@@ -461,4 +461,15 @@ PulseMessage = generate_labeler_serializer("PulseMessage", klass=types.PulseMess
     "_PLACEHOLDER",
 ])
 
+TradingMarketAveragePrice = generate_labeler_serializer("TradingMarketAveragePrice", klass=types.TradingMarketAveragePrice, labels=[
+    "PRICE_AVG",
+    "AMOUNT"
+])
+
+
+FundingMarketAveragePrice = generate_labeler_serializer("FundingMarketAveragePrice", klass=types.FundingMarketAveragePrice, labels=[
+    "RATE_AVG",
+    "AMOUNT"
+])
+
 #endregion

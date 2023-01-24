@@ -360,4 +360,14 @@ class PulseMessage(_Type):
     PROFILE: PulseProfile
     COMMENTS: int
 
+@dataclass
+class TradingMarketAveragePrice(_Type):
+    PRICE_AVG: float
+    AMOUNT: float
+
+@dataclass
+class FundingMarketAveragePrice(_Type):
+    RATE_AVG: float
+    AMOUNT: float
+
 #endregion

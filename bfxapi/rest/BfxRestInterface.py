@@ -278,6 +278,25 @@ class _RestPublicEndpoints(_Requests):
     def get_pulse_profile(self, nickname: str) -> PulseProfile:
         return serializers.PulseProfile.parse(*self._GET(f"pulse/profile/{nickname}"))
 
+    def get_trading_market_average_price(self, symbol: str, amount: Union[Decimal, str], price_limit: Union[Decimal, str] = None) -> TradingMarketAveragePrice:
+        data = {
+            "symbol": symbol,
+            "amount": str(amount),
+            "price_limit": str(price_limit)
+        }
+
+        return serializers.TradingMarketAveragePrice.parse(*self._POST("calc/trade/avg", data=data, _append_authentication_headers=False))
+
+    def get_funding_market_average_price(self, symbol: str, amount: Union[Decimal, str], period: Optional[int] = None, rate_limit: Union[Decimal, str] = None) -> FundingMarketAveragePrice:
+        data = {
+            "symbol": symbol,
+            "amount": str(amount),
+            "period": period,
+            "rate_limit": str(rate_limit)
+        }
+
+        return serializers.FundingMarketAveragePrice.parse(*self._POST("calc/trade/avg", data=data, _append_authentication_headers=False))
+
 class _RestAuthenticatedEndpoints(_Requests):
     def get_wallets(self) -> List[Wallet]:
         return [ serializers.Wallet.parse(*subdata) for subdata in self._POST("auth/r/wallets") ]
