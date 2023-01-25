@@ -404,4 +404,25 @@ class Claim(_Type):
     MIN_COLLATERAL: str
     META: JSON
 
+@dataclass
+class IncreaseInfo(_Type):
+    MAX_POS: int
+    CURRENT_POS: int
+    BASE_CURRENCY_BALANCE: int
+    TRADABLE_BALANCE_QUOTE_CURRENCY: int
+    TRADABLE_BALANCE_QUOTE_TOTAL: int
+    TRADABLE_BALANCE_BASE_CURRENCY: int
+    TRADABLE_BALANCE_BASE_TOTAL: int
+    FUNDING_AVAIL: int
+    FUNDING_VALUE: int
+    FUNDING_REQUIRED: int
+    FUNDING_VALUE_CURRENCY: str
+    FUNDING_REQUIRED_CURRENCY: str
+
+@dataclass
+class Increase(_Type):
+    SYMBOL: str
+    AMOUNT: float
+    BASE_PRICE: float
+
 #endregion
