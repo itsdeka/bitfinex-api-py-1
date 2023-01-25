@@ -536,4 +536,27 @@ Increase = generate_labeler_serializer("Increase", klass=types.Increase, labels=
     "BASE_PRICE"
 ])
 
+PositionHistory = generate_labeler_serializer("PositionHistory", klass=types.PositionHistory, labels=[
+    "SYMBOL",
+    "STATUS",
+    "AMOUNT",
+    "BASE_PRICE",
+    "FUNDING",
+    "FUNDING_TYPE",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "POSITION_ID",
+    "MTS_CREATE",
+    "MTS_UPDATE",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER"
+])
+
 #endregion
