@@ -559,4 +559,50 @@ PositionHistory = generate_labeler_serializer("PositionHistory", klass=types.Pos
     "_PLACEHOLDER"
 ])
 
+PositionSnapshot = generate_labeler_serializer("PositionSnapshot", klass=types.PositionSnapshot, labels=[
+    "SYMBOL",
+    "STATUS",
+    "AMOUNT",
+    "BASE_PRICE",
+    "FUNDING",
+    "FUNDING_TYPE",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "POSITION_ID",
+    "MTS_CREATE",
+    "MTS_UPDATE",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER"
+])
+
+PositionAudit = generate_labeler_serializer("PositionAudit", klass=types.PositionAudit, labels=[
+    "SYMBOL",
+    "STATUS",
+    "AMOUNT",
+    "BASE_PRICE",
+    "FUNDING",
+    "FUNDING_TYPE",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "POSITION_ID",
+    "MTS_CREATE",
+    "MTS_UPDATE",
+    "_PLACEHOLDER",
+    "TYPE",
+    "_PLACEHOLDER",
+    "COLLATERAL",
+    "COLLATERAL_MIN",
+    "META"
+])
+
 #endregion
