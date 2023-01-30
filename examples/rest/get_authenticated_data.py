@@ -13,6 +13,11 @@ bfx = Client(
 
 now = int(round(time.time() * 1000))
 
+def log_user_info():
+    user_info = bfx.rest.auth.get_user_info()
+    print(user_info)
+
+
 def log_wallets():
     wallets = bfx.rest.auth.get_wallets()
     print("Wallets:")
@@ -38,7 +43,7 @@ def log_positions():
 
 
 def log_trades():
-    trades = bfx.rest.auth.get_trades(symbol='tBTCUSD', start=0, end=now)
+    trades = bfx.rest.auth.get_trades_history(symbol='tBTCUSD', start=0, end=now)
     print("Trades:")
     [print(t) for t in trades]
 
@@ -96,6 +101,7 @@ def log_margin_info():
     print(f"Base margin info {base_margin_info}")
 
 def run():
+    log_user_info()
     log_wallets()
     log_orders()
     log_orders_history()

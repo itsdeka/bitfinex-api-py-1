@@ -11,6 +11,10 @@ from datetime import datetime
 from ._Requests import _Requests
 
 class _RestAuthenticatedEndpoints(_Requests):
+    def get_user_info(self) -> UserInfo:
+        print(self._POST(f"auth/r/info/user"))
+        return serializers.UserInfo.parse(*self._POST(f"auth/r/info/user"))
+
     def get_wallets(self) -> List[Wallet]:
         return [ serializers.Wallet.parse(*sub_data) for sub_data in self._POST("auth/r/wallets") ]
 
@@ -99,8 +103,8 @@ class _RestAuthenticatedEndpoints(_Requests):
 
         return [ serializers.Trade.parse(*sub_data) for sub_data in self._POST(endpoint, data=data) ]
 
-    def get_order_trades(self, symbol: str, id: int) -> List[OrderTrade]:
-        return [ serializers.OrderTrade.parse(*sub_data) for sub_data in self._POST(f"auth/r/order/{symbol}:{id}/trades") ]
+    def get_order_trades(self, symbol: str, order_id: int) -> List[OrderTrade]:
+        return [ serializers.OrderTrade.parse(*sub_data) for sub_data in self._POST(f"auth/r/order/{symbol}:{order_id}/trades") ]
 
     def get_ledgers(self, currency: str, category: Optional[int] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[Ledger]:
         data = {
