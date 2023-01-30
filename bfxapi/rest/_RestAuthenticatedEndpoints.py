@@ -12,7 +12,6 @@ from ._Requests import _Requests
 
 class _RestAuthenticatedEndpoints(_Requests):
     def get_user_info(self) -> UserInfo:
-        print(self._POST(f"auth/r/info/user"))
         return serializers.UserInfo.parse(*self._POST(f"auth/r/info/user"))
 
     def get_wallets(self) -> List[Wallet]:
