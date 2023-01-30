@@ -355,6 +355,16 @@ class FundingAutoRenew(_Type):
     threshold: float
 
 @dataclass()
+class FundingTrade(_Type):
+    id: int
+    symbol: str
+    mts_create: int
+    offer_id: int
+    amount: float
+    rate: float
+    period: int
+
+@dataclass()
 class FundingInfo(_Type):
     symbol: str
     yield_loan: float
