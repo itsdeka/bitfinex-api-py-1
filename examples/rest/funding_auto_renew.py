@@ -11,7 +11,7 @@ bfx = Client(
 )
 
 notification = bfx.rest.auth.submit_funding_toggle_auto_renew(
-    status=1,
+    status=True,
     currency="USD",
     amount="150",
     rate="0",  # FRR

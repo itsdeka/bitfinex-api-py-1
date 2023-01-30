@@ -105,6 +105,19 @@ class _RestAuthenticatedEndpoints(_Requests):
     def get_order_trades(self, symbol: str, order_id: int) -> List[OrderTrade]:
         return [ serializers.OrderTrade.parse(*sub_data) for sub_data in self._POST(f"auth/r/order/{symbol}:{order_id}/trades") ]
 
+    def get_funding_trades_history(self, symbol: Optional[str] = None, sort: Optional[Sort] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[FundingTrade]:
+        if symbol == None:
+            endpoint = "auth/r/funding/trades/hist"
+        else: endpoint = f"auth/r/funding/trades/{symbol}/hist"
+
+        data = {
+            "sort": sort,
+            "start": start, "end": end,
+            "limit": limit
+        }
+
+        return [ serializers.FundingTrade.parse(*sub_data) for sub_data in self._POST(endpoint, data=data) ]
+
     def get_ledgers(self, currency: str, category: Optional[int] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[Ledger]:
         data = {
             "category": category,
@@ -136,8 +149,10 @@ class _RestAuthenticatedEndpoints(_Requests):
     def cancel_funding_offer(self, id: int) -> Notification[FundingOffer]:
         return serializers._Notification[FundingOffer](serializer=serializers.FundingOffer).parse(*self._POST("auth/w/funding/offer/cancel", data={ "id": id }))
 
-    def cancel_all_funding_offers(self, currency: str) -> Notification:
-        return serializers._Notification().parse(*self._POST("auth/w/funding/offer/cancel/all", data={ "currency": currency }))
+    def cancel_all_funding_offers(self, currency: str) -> Notification[Literal[None]]:
+        return serializers._Notification[Literal[None]](serializer=None).parse(
+            *self._POST("auth/w/funding/offer/cancel/all", data={ "currency": currency })
+        )
 
     def get_funding_offers_history(self, symbol: Optional[str] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[FundingOffer]:
         if symbol == None:
@@ -189,39 +204,29 @@ class _RestAuthenticatedEndpoints(_Requests):
 
         return [ serializers.FundingCredit.parse(*sub_data) for sub_data in self._POST(endpoint, data=data) ]
 
-    def get_funding_trades_history(self, symbol: Optional[str] = None) -> List[FundingTrade]:
-        if symbol == None:
-            endpoint = "auth/r/funding/trades/hist"
-        else: endpoint = f"auth/r/funding/trades/{symbol}/hist"
-
-        return [ serializers.FundingTrade.parse(*sub_data) for sub_data in self._POST(endpoint) ]
-
     def get_funding_info(self, key: str) -> FundingInfo:
         response = self._POST(f"auth/r/info/funding/{key}")
+      
         return serializers.FundingInfo.parse(*([response[1]] + response[2]))
 
-    def submit_funding_close(self, id: int) -> Notification:
-        return serializers._Notification().parse(*self._POST("auth/w/funding/close", data={ "id": id }))
+    def submit_funding_close(self, id: int) -> Notification[Literal[None]]:
+        return serializers._Notification[Literal[None]](serializer=None).parse(
+            *self._POST("auth/w/funding/close", data={ "id": id })
+        )
 
-    def submit_funding_toggle_auto_renew(self, status: int, currency: str, amount: str, rate: int, period: int) -> Notification[FundingAutoRenew]:
-        data = {
-            "status": status,
-            "currency": currency,
-            "amount": amount,
-            "rate": rate,
-            "period": period
-        }
+    def submit_funding_toggle_auto_renew(self, status: bool, currency: str, amount: Optional[str] = None, rate: Optional[int] = None, period: Optional[int] = None) -> Notification[FundingAutoRenew]:
+        return serializers._Notification[FundingAutoRenew](serializer=serializers.FundingAutoRenew).parse(*self._POST("auth/w/funding/auto", data={
+            "status": int(status),
+            "currency": currency, "amount": amount,
+            "rate": rate, "period": period
+        }))
 
-        return serializers._Notification[FundingAutoRenew](serializer=serializers.FundingAutoRenew).parse(*self._POST("auth/w/funding/auto", data=data))
-
-    def submit_funding_toggle_keep(self, funding_type: int, ids: List[int], changes: Dict[int, int]) -> Notification:
-        data = {
-            "type": funding_type,
+    def submit_funding_toggle_keep(self, type: Literal["credit", "loan"], ids: Optional[List[int]] = None, changes: Optional[Dict[int, bool]] = None) -> Notification[Literal[None]]:
+        return serializers._Notification[Literal[None]](serializer=None).parse(*self._POST("auth/w/funding/keep", data={
+            "type": type,
             "id": ids,
             "changes": changes
-        }
-
-        return serializers._Notification().parse(*self._POST("auth/w/funding/keep", data=data))
+        }))
 
     def submit_wallet_transfer(self, from_wallet: str, to_wallet: str, currency: str, currency_to: str, amount: Union[Decimal, float, str]) -> Notification[Transfer]:
         data = {
