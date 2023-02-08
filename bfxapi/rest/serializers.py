@@ -88,6 +88,21 @@ UserInfo = generate_labeler_serializer("UserInfo", klass=types.UserInfo, labels=
     "is_merchant_enterprise"
 ])
 
+LoginHistory = generate_labeler_serializer("LoginHistory", klass=types.LoginHistory, labels=[
+    "id",
+    "_PLACEHOLDER",
+    "time",
+    "_PLACEHOLDER",
+    "ip",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "extra_info"
+])
+
+BalanceAvailable = generate_labeler_serializer("BalanceAvailable", klass=types.BalanceAvailable, labels=[
+    "amount"
+])
+
 TradingPairTicker = generate_labeler_serializer("TradingPairTicker", klass=types.TradingPairTicker, labels=[
     "symbol",
     "bid",

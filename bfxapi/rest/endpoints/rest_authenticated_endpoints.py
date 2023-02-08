@@ -14,6 +14,9 @@ class RestAuthenticatedEndpoints(Middleware):
     def get_user_info(self) -> UserInfo:
         return serializers.UserInfo.parse(*self._POST(f"auth/r/info/user"))
 
+    def get_login_history(self) -> LoginHistory:
+        return [serializers.LoginHistory.parse(*sub_data) for sub_data in self._POST("auth/r/logins/hist")]
+
     def get_wallets(self) -> List[Wallet]:
         return [ serializers.Wallet.parse(*sub_data) for sub_data in self._POST("auth/r/wallets") ]
 
@@ -156,6 +159,17 @@ class RestAuthenticatedEndpoints(Middleware):
 
     def get_derivative_position_collateral_limits(self, symbol: str) -> DerivativePositionCollateralLimits:
         return serializers.DerivativePositionCollateralLimits.parse(*self._POST("auth/calc/deriv/collateral/limits", body={ "symbol": symbol }))
+
+    def get_balance_available_for_orders_or_offers(self, symbol: str, type: str, dir: Optional[int] = None, rate: Optional[str] = None, lev: Optional[str] = None) -> BalanceAvailable:
+        body = {
+            "symbol": symbol,
+            "dir": dir,
+            "rate": rate,
+            "type": type,
+            "lev": lev
+        }
+
+        return serializers.BalanceAvailable.parse(*self._POST("auth/calc/order/avail", body=body))
 
     def get_funding_offers(self, symbol: Optional[str] = None) -> List[FundingOffer]:
         endpoint = "auth/r/funding/offers"
