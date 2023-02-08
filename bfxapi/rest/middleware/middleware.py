@@ -55,7 +55,7 @@ class Middleware(object):
         return data
 
     def _POST(self, endpoint: str, params: Optional["_Params"] = None, body: Optional[Any] = None, _ignore_authentication_headers: bool = False) -> Any:
-        data = json.dumps(body, cls=JSONEncoder)
+        data = json.dumps(body, cls=JSONEncoder) if body else None
 
         headers = { "Content-Type": "application/json" }
 
