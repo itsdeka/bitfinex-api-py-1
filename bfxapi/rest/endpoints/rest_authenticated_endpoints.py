@@ -14,6 +14,13 @@ class RestAuthenticatedEndpoints(Middleware):
     def get_user_info(self) -> UserInfo:
         return serializers.UserInfo.parse(*self._POST(f"auth/r/info/user"))
 
+    def get_summary(self) -> Summary:
+        response = self._POST(f"auth/r/summary")
+
+        data = response[4][0] + response[4][1] + response[5] + response[6] + [response[9]['leo_lev'], response[9]['leo_amount_avg']]
+
+        return serializers.Summary.parse(*data)
+
     def get_login_history(self) -> LoginHistory:
         return [serializers.LoginHistory.parse(*sub_data) for sub_data in self._POST("auth/r/logins/hist")]
 

@@ -229,6 +229,24 @@ class UserInfo(_Type):
     is_merchant_enterprise: int
 
 @dataclass
+class Summary(_Type):
+    maker_fee_to_crypto: float
+    maker_fee_to_stable_coin: float
+    maker_fee_to_fiat: float
+    maker_rebate_to_deriv: float
+    taker_fee_to_crypto: float
+    taker_fee_to_stable_coin: float
+    taker_fee_to_fiat: float
+    taker_fee_to_deriv: float
+    trade_vol_30d: JSON
+    fees_trading_30d: JSON
+    fees_trading_total_30d: float
+    fees_funding_30d: JSON
+    fees_funding_total_30d: float
+    leo_lev: float
+    leo_amount_avg: float
+
+@dataclass
 class LoginHistory(_Type):
     id: int
     time: int

@@ -88,6 +88,29 @@ UserInfo = generate_labeler_serializer("UserInfo", klass=types.UserInfo, labels=
     "is_merchant_enterprise"
 ])
 
+Summary = generate_labeler_serializer("Summary", klass=types.Summary, labels=[
+    "maker_fee_to_crypto",
+    "maker_fee_to_stable_coin",
+    "maker_fee_to_fiat",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "maker_rebate_to_deriv",
+    "taker_fee_to_crypto",
+    "taker_fee_to_stable_coin",
+    "taker_fee_to_fiat",
+    "_PLACEHOLDER",
+    "_PLACEHOLDER",
+    "taker_fee_to_deriv",
+    "trade_vol_30d",
+    "fees_trading_30d",
+    "fees_trading_total_30d",
+    "_PLACEHOLDER",
+    "fees_funding_30d",
+    "fees_funding_total_30d",
+    "leo_lev",
+    "leo_amount_avg"
+])
+
 LoginHistory = generate_labeler_serializer("LoginHistory", klass=types.LoginHistory, labels=[
     "id",
     "_PLACEHOLDER",
