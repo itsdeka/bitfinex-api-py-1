@@ -316,13 +316,13 @@ class RestAuthenticatedEndpoints(Middleware):
 
         return serializers._Notification[DepositAddress](serializers.DepositAddress).parse(*self._POST("auth/w/deposit/address", body=body))
 
-    def generate_deposit_invoice(self, wallet: str, currency: str, amount: Union[Decimal, float, str]) -> Invoice:
+    def generate_deposit_invoice(self, wallet: str, currency: str, amount: Union[Decimal, float, str]) -> LightningNetworkInvoice:
         body = {
             "wallet": wallet, "currency": currency,
             "amount": amount
         }
 
-        return serializers.Invoice.parse(*self._POST("auth/w/deposit/invoice", body=body))
+        return serializers.LightningNetworkInvoice.parse(*self._POST("auth/w/deposit/invoice", body=body))
 
     def get_movements(self, currency: Optional[str] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[Movement]:
         if currency == None:
@@ -335,3 +335,14 @@ class RestAuthenticatedEndpoints(Middleware):
         }
 
         return [ serializers.Movement.parse(*sub_data) for sub_data in self._POST(endpoint, body=body) ]
+
+    def submit_invoice(self, amount: Union[Decimal, float, str], currency: str, pay_currencies: List[str], duration: int, order_id: str, customer_info: CustomerInfo,
+                       webhook: Optional[str] = None, redirect_url: Optional[str] = None) -> InvoiceSubmission:
+        body = {
+            "amount": amount, "currency": currency,
+            "payCurrencies": pay_currencies, "duration": duration,
+            "orderId": order_id, "customerInfo": customer_info.to_dict(),
+            "webhook": webhook, "redirectUrl": redirect_url
+        }
+
+        return serializers.InvoiceSubmission.parse(*self._POST("auth/w/ext/pay/invoice/create", body=body))
