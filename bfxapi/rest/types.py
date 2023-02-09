@@ -440,7 +440,7 @@ class DepositAddress(_Type):
     pool_address: str
 
 @dataclass
-class Invoice(_Type):
+class LightningNetworkInvoice(_Type):
     invoice_hash: str
     invoice: str
     amount: str
@@ -560,5 +560,55 @@ class DerivativePositionCollateral(_Type):
 class DerivativePositionCollateralLimits(_Type):
     min_collateral: float
     max_collateral: float
+
+@dataclass
+class CustomerInfo(_Type):
+    nationality: str
+    resid_country: str
+    resid_state: Optional[str]
+    resid_city: str
+    resid_zip_code: str
+    resid_street: str
+    resid_building_no: Optional[str]
+    full_name: str
+    email: str
+    tos_accepted: Optional[bool]
+
+    def to_dict(self):
+        return {
+            "nationality": self.nationality,
+            "residCountry": self.resid_country,
+            "residState": self.resid_state,
+            "residCity": self.resid_city,
+            "residZipCode": self.resid_zip_code,
+            "residStreet": self.resid_street,
+            "residBuildingNo": self.resid_building_no,
+            "fullName": self.full_name,
+            "email": self.email,
+            "tosAccepted": self.tos_accepted
+        }
+
+@dataclass
+class InvoiceSubmission(_Type):
+    id: str
+    t: int
+    type: str
+    duration: int
+    amount: float
+    currency: str
+    order_id: str
+    pay_currencies: List[str]
+    webhook: str
+    redirect_url: str
+    status: str
+    customer_info: Optional[CustomerInfo]
+    invoices: JSON
+    invoices_amount: float
+    invoices_bfxpay_ccy: str
+    invoices_pay_ccy: str
+    invoices_pay_ccy: str
+    invoices_pool_ccy: str
+    invoices_address: str
+    invoices_ext: JSON
 
 #endregion

@@ -18,10 +18,11 @@ __serializers__ = [
     "FundingOffer", "FundingCredit", "FundingLoan",
     "FundingAutoRenew", "FundingInfo", "Wallet",
     "Transfer", "Withdrawal", "DepositAddress",
-    "Invoice", "Movement", "SymbolMarginInfo",
+    "LightningNetworkInvoice", "Movement", "SymbolMarginInfo",
     "BaseMarginInfo", "PositionClaim", "PositionIncreaseInfo",
     "PositionIncrease", "PositionHistory", "PositionSnapshot",
     "PositionAudit", "DerivativePositionCollateral", "DerivativePositionCollateralLimits",
+    "InvoiceSubmission"
 ]
 
 #region Serializers definition for Rest Public Endpoints
@@ -581,7 +582,7 @@ DepositAddress = generate_labeler_serializer("DepositAddress", klass=types.Depos
     "pool_address"
 ])
 
-Invoice = generate_labeler_serializer("Invoice", klass=types.Invoice, labels=[
+LightningNetworkInvoice = generate_labeler_serializer("LightningNetworkInvoice", klass=types.LightningNetworkInvoice, labels=[
     "invoice_hash",
     "invoice",
     "_PLACEHOLDER",
@@ -743,6 +744,29 @@ DerivativePositionCollateral = generate_labeler_serializer("DerivativePositionCo
 DerivativePositionCollateralLimits = generate_labeler_serializer("DerivativePositionCollateralLimits", klass=types.DerivativePositionCollateralLimits, labels=[
     "min_collateral",
     "max_collateral"
+])
+
+InvoiceSubmission = generate_labeler_serializer("InvoiceSubmission", klass=types.InvoiceSubmission, labels=[
+    "id",
+    "t",
+    "type",
+    "duration",
+    "amount",
+    "currency",
+    "order_id",
+    "pay_currencies",
+    "webhook",
+    "redirect_url",
+    "status",
+    "customer_info",
+    "invoices",
+    "invoices_amount",
+    "invoices_bfxpay_ccy",
+    "invoices_pay_ccy",
+    "invoices_pay_ccy",
+    "invoices_pool_ccy",
+    "invoices_address",
+    "invoices_ext"
 ])
 
 #endregion
