@@ -608,4 +608,9 @@ class InvoiceSubmission(_Type):
     customer_info: Optional[CustomerInfo]
     invoices: List[Invoice]
 
+@dataclass
+class InvoiceCountStats(_Type):
+    time: str
+    count: str
+
 #endregion
