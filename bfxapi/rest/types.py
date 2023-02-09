@@ -565,7 +565,6 @@ class DerivativePositionCollateralLimits(_Type):
 class CustomerInfo(_Type):
     nationality: str
     resid_country: str
-    resid_state: Optional[str]
     resid_city: str
     resid_zip_code: str
     resid_street: str
@@ -578,7 +577,6 @@ class CustomerInfo(_Type):
         return {
             "nationality": self.nationality,
             "residCountry": self.resid_country,
-            "residState": self.resid_state,
             "residCity": self.resid_city,
             "residZipCode": self.resid_zip_code,
             "residStreet": self.resid_street,
@@ -589,26 +587,25 @@ class CustomerInfo(_Type):
         }
 
 @dataclass
+class Invoice(_Type):
+    amount: float
+    pay_currency: str
+    pool_currency: str
+    address: str
+    ext: JSON
+
+@dataclass
 class InvoiceSubmission(_Type):
     id: str
-    t: int
     type: str
+    t: int
     duration: int
     amount: float
     currency: str
     order_id: str
     pay_currencies: List[str]
-    webhook: str
-    redirect_url: str
     status: str
     customer_info: Optional[CustomerInfo]
-    invoices: JSON
-    invoices_amount: float
-    invoices_bfxpay_ccy: str
-    invoices_pay_ccy: str
-    invoices_pay_ccy: str
-    invoices_pool_ccy: str
-    invoices_address: str
-    invoices_ext: JSON
+    invoices: List[Invoice]
 
 #endregion

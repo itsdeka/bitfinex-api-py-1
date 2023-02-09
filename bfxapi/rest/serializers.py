@@ -746,27 +746,4 @@ DerivativePositionCollateralLimits = generate_labeler_serializer("DerivativePosi
     "max_collateral"
 ])
 
-InvoiceSubmission = generate_labeler_serializer("InvoiceSubmission", klass=types.InvoiceSubmission, labels=[
-    "id",
-    "t",
-    "type",
-    "duration",
-    "amount",
-    "currency",
-    "order_id",
-    "pay_currencies",
-    "webhook",
-    "redirect_url",
-    "status",
-    "customer_info",
-    "invoices",
-    "invoices_amount",
-    "invoices_bfxpay_ccy",
-    "invoices_pay_ccy",
-    "invoices_pay_ccy",
-    "invoices_pool_ccy",
-    "invoices_address",
-    "invoices_ext"
-])
-
 #endregion

@@ -69,7 +69,7 @@ class Middleware(object):
 
         data = response.json()
 
-        if len(data) and data[0] == "error":
+        if type(data) == list and len(data) and data[0] == "error":
             if data[1] == Error.ERR_PARAMS:
                 raise RequestParametersError(f"The request was rejected with the following parameter error: <{data[2]}>")
 
