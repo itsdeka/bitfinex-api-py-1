@@ -344,14 +344,20 @@ class RestAuthenticatedEndpoints(Middleware):
 
         return [parse_invoice_response(sub_data) for sub_data in self._POST("auth/r/ext/pay/invoices", body=body)]
 
-    def get_invoice_count_stats(self, status: str, format: str) -> InvoiceCountStats:
+    def get_invoice_count_stats(self, status: str, format: str) -> List[InvoiceCountStats]:
         body = {
             "status": status, "format": format
         }
 
         response = self._POST("auth/r/ext/pay/invoice/stats/count", body=body)
 
-        return InvoiceCountStats(
-            time=response[0]["time"],
-            count=response[0]["count"]
-        )
+        return [InvoiceCountStats(time=sub_data["time"], count=sub_data["count"]) for sub_data in response]
+
+    def get_invoice_earning_stats(self, currency: str, format: str) -> List[InvoiceEarningStats]:
+        body = {
+            "currency": currency, "format": format
+        }
+
+        response = self._POST("auth/r/ext/pay/invoice/stats/earning", body=body)
+
+        return [InvoiceEarningStats(time=sub_data["time"], count=sub_data["count"]) for sub_data in response]

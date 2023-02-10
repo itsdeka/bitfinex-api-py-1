@@ -568,6 +568,11 @@ class InvoiceCountStats(_Type):
     time: str
     count: str
 
+@dataclass
+class InvoiceEarningStats(_Type):
+    time: str
+    count: str
+
 #endregion
 
 #region Type hinting for models which are not serializable
