@@ -379,3 +379,15 @@ class RestAuthenticatedEndpoints(Middleware):
         response = self._POST("auth/r/ext/pay/settings/convert/list")
 
         return [CurrencyConversion(base_currency=sub_data["baseCcy"], convert_currency=sub_data["convertCcy"], created=sub_data["created"]) for sub_data in response]
+
+    def add_currency_conversion(self, base_currency: str, convert_currency: str):
+        self._POST("auth/w/ext/pay/settings/convert/create", body={
+            "baseCcy": base_currency,
+            "convertCcy": convert_currency
+        })
+
+    def remove_currency_conversion(self, base_currency: str, convert_currency: str):
+        self._POST("auth/w/ext/pay/settings/convert/remove", body={
+            "baseCcy": base_currency,
+            "convertCcy": convert_currency
+        })
