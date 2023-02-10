@@ -563,6 +563,11 @@ class DerivativePositionCollateralLimits(_Type):
     min_collateral: float
     max_collateral: float
 
+@dataclass
+class InvoiceCountStats(_Type):
+    time: str
+    count: str
+
 #endregion
 
 #region Type hinting for models which are not serializable
@@ -577,16 +582,14 @@ class InvoiceSubmission(_Type):
     currency: str
     order_id: str
     pay_currencies: List[str]
-    webhook: str
-    redirect_url: str
     status: Literal["CREATED", "PENDING", "COMPLETED", "EXPIRED"]
     customer_info: Optional["CustomerInfo"]
     invoices: List["Invoice"]
+    merchant_name: str
 
 class CustomerInfo(SimpleNamespace):
     nationality: str
     resid_country: str
-    resid_state: str
     resid_city: str
     resid_zip_code: str
     resid_street: str
@@ -594,6 +597,19 @@ class CustomerInfo(SimpleNamespace):
     full_name: str
     email: str
     tos_accepted: bool
+
+    def to_dict(self):
+        return {
+            "nationality": self.nationality,
+            "residCountry": self.resid_country,
+            "residCity": self.resid_city,
+            "residZipCode": self.resid_zip_code,
+            "residStreet": self.resid_street,
+            "residBuildingNo": self.resid_building_no if hasattr(self, "resid_building_no") else None,
+            "fullName": self.full_name,
+            "email": self.email,
+            "tosAccepted": self.tos_accepted if hasattr(self, "tos_accepted") else None
+        }
 
 class Invoice(SimpleNamespace):
     amount: float

@@ -10,6 +10,8 @@ from datetime import datetime
 
 from ..middleware import Middleware
 
+from ..helper import parse_invoice_response
+
 class RestAuthenticatedEndpoints(Middleware):
     def get_user_info(self) -> UserInfo:
         return serializers.UserInfo.parse(*self._POST(f"auth/r/info/user"))
@@ -325,17 +327,31 @@ class RestAuthenticatedEndpoints(Middleware):
     def submit_invoice(self, amount: Union[Decimal, float, str], currency: str, order_id: str, 
                        customer_info: CustomerInfo, pay_currencies: List[str], duration: Optional[int] = None,
                        webhook: Optional[str] = None, redirect_url: Optional[str] = None) -> InvoiceSubmission:
-        data = self._POST("auth/w/ext/pay/invoice/create", body={
-            "amount": amount, "currency": currency, "order_id": order_id,
-            "customer_info": customer_info, "pay_currencies": pay_currencies, "duration": duration,
-            "webhook": webhook, "redirect_url": redirect_url
+
+        response = self._POST("auth/w/ext/pay/invoice/create", body={
+            "amount": amount, "currency": currency, "orderId": order_id,
+            "customerInfo": customer_info.to_dict(), "payCurrencies": pay_currencies, "duration": duration,
+            "webhook": webhook, "redirectUrl": redirect_url
         })
 
-        if "customer_info" in data and data["customer_info"] != None:
-            data["customer_info"] = CustomerInfo(**data["customer_info"])
+        return parse_invoice_response(response)
 
-        if "invoices" in data and data["invoices"] != None:
-            for index, invoice in enumerate(data["invoices"]):
-                data["invoices"][index] = Invoice(**invoice)
-        
-        return InvoiceSubmission(**data)
+    def get_invoices(self, id: Optional[str] = None, start: Optional[str] = None, end: Optional[str] = None, limit: Optional[int] = None) -> List[InvoiceSubmission]:
+        body = {
+            "id": id, "start": start,
+            "end": end, "limit": limit
+        }
+
+        return [parse_invoice_response(sub_data) for sub_data in self._POST("auth/r/ext/pay/invoices", body=body)]
+
+    def get_invoice_count_stats(self, status: str, format: str) -> InvoiceCountStats:
+        body = {
+            "status": status, "format": format
+        }
+
+        response = self._POST("auth/r/ext/pay/invoice/stats/count", body=body)
+
+        return InvoiceCountStats(
+            time=response[0]["time"],
+            count=response[0]["count"]
+        )
