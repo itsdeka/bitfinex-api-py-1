@@ -1,4 +1,4 @@
-from .types import InvoiceSubmission, CustomerInfo, Invoice
+from .types import InvoiceSubmission, CustomerInfo, Invoice, Payment
 
 def parse_invoice_response(response):
     response["customer_info"] = CustomerInfo(
@@ -30,5 +30,20 @@ def parse_invoice_response(response):
 
     response["pay_currencies"] = response["payCurrencies"]
     del response["payCurrencies"]
+
+    if "payment" in response:
+        response["payment"] = Payment(
+            transaction_id=response["payment"]["txid"],
+            amount=response["payment"]["amount"],
+            currency=response["payment"]["currency"],
+            method=response["payment"]["method"],
+            status=response["payment"]["status"],
+            confirmations=response["payment"]["confirmations"],
+            created_at=response["payment"]["created_at"],
+            updated_at=response["payment"]["updated_at"],
+            ledger_id=response["payment"]["ledgerId"]
+        )
+    else:
+        response["payment"] = None
 
     return InvoiceSubmission(**response)

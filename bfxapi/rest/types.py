@@ -564,14 +564,15 @@ class DerivativePositionCollateralLimits(_Type):
     max_collateral: float
 
 @dataclass
-class InvoiceCountStats(_Type):
+class InvoiceStats(_Type):
     time: str
     count: str
 
 @dataclass
-class InvoiceEarningStats(_Type):
-    time: str
-    count: str
+class CurrencyConversion(_Type):
+    base_currency: str
+    convert_currency: str
+    created: int
 
 #endregion
 
@@ -591,6 +592,7 @@ class InvoiceSubmission(_Type):
     customer_info: Optional["CustomerInfo"]
     invoices: List["Invoice"]
     merchant_name: str
+    payment: Optional["Payment"]
 
 class CustomerInfo(SimpleNamespace):
     nationality: str
@@ -623,5 +625,21 @@ class Invoice(SimpleNamespace):
     pool_currency: str
     address: str
     ext: JSON
+
+class Payment(SimpleNamespace):
+    transaction_id: str
+    amount: str
+    currency: str
+    method: str
+    status: str
+    confirmations: int
+    created: str
+    updated: str
+    deposit_id: int
+    ledger_id: int
+    force_completed: bool
+    amount_diff: str
+    additional_payments: JSON
+    additional_payment: JSON
 
 #endregion

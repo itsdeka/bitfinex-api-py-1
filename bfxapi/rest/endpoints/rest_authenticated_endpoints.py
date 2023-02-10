@@ -344,20 +344,38 @@ class RestAuthenticatedEndpoints(Middleware):
 
         return [parse_invoice_response(sub_data) for sub_data in self._POST("auth/r/ext/pay/invoices", body=body)]
 
-    def get_invoice_count_stats(self, status: str, format: str) -> List[InvoiceCountStats]:
+    def get_invoice_count_stats(self, status: str, format: str) -> List[InvoiceStats]:
         body = {
             "status": status, "format": format
         }
 
         response = self._POST("auth/r/ext/pay/invoice/stats/count", body=body)
 
-        return [InvoiceCountStats(time=sub_data["time"], count=sub_data["count"]) for sub_data in response]
+        return [InvoiceStats(time=sub_data["time"], count=sub_data["count"]) for sub_data in response]
 
-    def get_invoice_earning_stats(self, currency: str, format: str) -> List[InvoiceEarningStats]:
+    def get_invoice_earning_stats(self, currency: str, format: str) -> List[InvoiceStats]:
         body = {
             "currency": currency, "format": format
         }
 
         response = self._POST("auth/r/ext/pay/invoice/stats/earning", body=body)
 
-        return [InvoiceEarningStats(time=sub_data["time"], count=sub_data["count"]) for sub_data in response]
+        return [InvoiceStats(time=sub_data["time"], count=sub_data["count"]) for sub_data in response]
+
+    def complete_invoice(self, id: str, pay_currency: str, deposit_id: Optional[int] = None, ledger_id: Optional[int] = None) -> InvoiceSubmission:
+        response = self._POST("auth/w/ext/pay/invoice/complete", body={
+            "id": id, "payCcy": pay_currency,
+            "depositId": deposit_id, "ledgerId": ledger_id
+        })
+
+        return parse_invoice_response(response)
+
+    def expire_invoice(self, id: str) -> InvoiceSubmission:
+        response = self._POST("auth/w/ext/pay/invoice/expire", body={"id": id})
+
+        return parse_invoice_response(response)
+
+    def get_currency_conversion_list(self) -> List[CurrencyConversion]:
+        response = self._POST("auth/r/ext/pay/settings/convert/list")
+
+        return [CurrencyConversion(base_currency=sub_data["baseCcy"], convert_currency=sub_data["convertCcy"], created=sub_data["created"]) for sub_data in response]
