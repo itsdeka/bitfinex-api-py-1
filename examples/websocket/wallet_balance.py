@@ -4,7 +4,7 @@ import os
 
 from bfxapi.client import Client, Constants
 from bfxapi.websocket.enums import Error, OrderType
-from bfxapi.websocket.typings import Notification, Order
+from bfxapi.websocket.typings import Notification, Order, Wallet
 
 from bfxapi.websocket import BfxWebsocketClient
 
@@ -15,19 +15,19 @@ bfx = Client(
 )
 
 @bfx.wss.on('wallet_snapshot')
-def log_snapshot(wallets):
+def log_snapshot(wallets: List[Wallet]):
     for wallet in wallets:
         print("Balance: {}".format(wallet))
 
 
 @bfx.wss.on('wallet_update')
-def log_update(wallet):
+def log_update(wallet: Wallet):
     print("Balance updates: {}".format(wallet))
 
 
-@bfx.wss.on('wss-error')
-def log_error(msg):
-    print("Error: {}".format(msg))
+@bfx.wss.on("wss-error")
+def on_wss_error(code: Error, msg: str):
+    print(code, msg)
 
 
 bfx.wss.run()
