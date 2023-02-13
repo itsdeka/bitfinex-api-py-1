@@ -22,7 +22,7 @@ async def on_open(event):
     print(f"Auth event {event}")
 
     order: Inputs.Order.New = {
-        "gid": generate_unique_cid(),
+        "cid": generate_unique_cid(),
         "type": OrderType.EXCHANGE_LIMIT,
         "symbol": "tBTCUST",
         "amount": "0.1",
